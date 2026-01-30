@@ -110,7 +110,7 @@ Menampilkan detail buku berdasarkan ID.
 **Contoh:**
 
 ```
-GET /api/books/1
+GET /api/books/2
 ```
 
 📸 Screenshot Test Endpoint GET /api/books/:id
