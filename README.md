@@ -1,68 +1,275 @@
-# Library System – UTS REMED PAW
+# Library System – UTS Remedial PAW
 
-Aplikasi **Library System** berbasis **REST API** menggunakan **Node.js (Express)** dan **MySQL**.  
-Aplikasi ini dibuat untuk memenuhi tugas **UTS Remedial Pengembangan Aplikasi Web**.
+Aplikasi **Library System** berbasis **REST API** menggunakan **Node.js (Express)** dan **MySQL**.
+Aplikasi ini dibuat untuk memenuhi **UTS Remedial Pengembangan Aplikasi Web (PAW)**.
 
----
-
-## 📌 Fitur
-- CRUD Buku (API)
-- Peminjaman Buku
-- Log Peminjaman
-- Validasi input sederhana (title & author tidak boleh kosong)
-- RESTful API
-- Database MySQL
+Aplikasi **tidak menggunakan frontend**, seluruh pengujian dilakukan melalui **API Client (Postman / Thunder Client)**.
 
 ---
 
-## 🛠️ Teknologi
-- Node.js
-- Express.js
-- Sequelize ORM
-- MySQL
+## 📌 Fitur Aplikasi
+
+* Menampilkan data buku
+* Menambah, mengubah, dan menghapus buku (Admin)
+* Validasi input sederhana (title dan author tidak boleh kosong)
+* Peminjaman buku oleh user
+* Pencatatan lokasi peminjaman (latitude & longitude)
+* RESTful API
+* Database MySQL
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* Node.js
+* Express.js
+* Sequelize ORM
+* MySQL
+* Nodemon
 
 ---
 
 ## ⚙️ Cara Menjalankan Aplikasi
 
-1. Clone Repository
+### 1. Clone Repository
+
 ```bash
 git clone https://github.com/B-PPAW-TI503P-2025/20230140088_B_REMED_UTS.git
 cd 20230140088_B_REMED_UTS
+```
 
-2. Install Dependency
+### 2. Install Dependency
+
+```bash
 npm install
+```
 
-3. Konfigurasi Environment
-But file .env
-<img width="212" height="107" alt="image" src="https://github.com/user-attachments/assets/3ded7ae3-219d-4f3a-9975-59e42f2da08f" />
-Pastikan database library_db sudah dibuat di MySQL.
+### 3. Konfigurasi Database
 
-4. Jalankan Server
+Buat database MySQL dengan nama:
+
+```sql
+CREATE DATABASE library_db;
+```
+
+### 4. Konfigurasi Environment
+
+Buat file `.env` di root project:
+
+```env
+DB_NAME=library_db
+DB_USER=root
+DB_PASS=
+DB_HOST=localhost
+PORT=3000
+```
+
+### 5. Jalankan Aplikasi
+
+```bash
 npm run dev
+```
 
-jika berhasil, akan muncul log:
-Server berjalan di port 3000
+Jika berhasil, server akan berjalan di:
 
+```
+http://localhost:3000
+```
 
-**## Dokumentasi & Test Endpoint API**
+---
 
-🔓 Public Endpoints
+## 📡 Dokumentasi Endpoint API
+
+Base URL:
+
+```
+http://localhost:3000/api
+```
+
+---
+
+## 🔓 Public Endpoints
+
 Endpoint yang dapat diakses tanpa autentikasi.
 
-1️⃣ GET Semua book (public)
-<img width="236" height="26" alt="image" src="https://github.com/user-attachments/assets/4ffd43e3-814b-4eb7-8131-ff2a91bf5e2a" />
-Deskripsi:
-Menampilkan seluruh data buku yang tersedia di perpustakaan.
-<img width="790" height="331" alt="Public GET " src="https://github.com/user-attachments/assets/07d60799-abf8-4b82-a69c-146eaef1098a" />
+### GET /api/books
 
-2️⃣ GET Book dengan ID (public)
-<img width="170" height="26" alt="image" src="https://github.com/user-attachments/assets/92399ed5-9c62-491b-a4d4-620723d7aae1" />
-Deskripsi:
-Menampilkan detail satu buku berdasarkan ID.
-<img width="792" height="237" alt="Public GET detail book" src="https://github.com/user-attachments/assets/91f436b5-d19a-4a22-9a65-83986affe7fa" />
+**Deskripsi:**
+Menampilkan seluruh data buku.
+
+📸 Screenshot Test Endpoint GET /api/books
+<img width="790" height="331" alt="Public GET " src="https://github.com/user-attachments/assets/a0328695-1e06-4c54-aca3-e7a508896ced" />
+
+---
+
+### GET /api/books/:id
+
+**Deskripsi:**
+Menampilkan detail buku berdasarkan ID.
+
+**Contoh:**
+
+```
+GET /api/books/1
+```
+
+📸 Screenshot Test Endpoint GET /api/books/:id
+<img width="792" height="237" alt="Public GET detail book" src="https://github.com/user-attachments/assets/0d072383-aae8-430d-9f8f-fe128bea1ced" />
+
+---
+
+## 🔐 Admin Mode
+
+Endpoint khusus Admin.
+Wajib menambahkan header:
+
+```
+x-user-role: admin
+```
+
+---
+
+### POST /api/books
+
+**Deskripsi:**
+Menambahkan buku baru ke sistem.
+
+**Body (JSON):**
+
+```json
+{
+  "title": "Parabel",
+  "author": "Brian Krisna",
+  "stock": 4
+}
+```
+
+**Validasi:**
+
+* title tidak boleh kosong
+* author tidak boleh kosong
+
+📸 Screenshot Test Endpoint POST /api/books
+<img width="792" height="266" alt="Cuplikan layar 2026-01-30 010043" src="https://github.com/user-attachments/assets/7dd742e0-077b-47ff-a74b-5ee800df78f5" />
+
+---
+
+### PUT /api/books/:id
+
+**Deskripsi:**
+Mengubah data buku berdasarkan ID.
+
+**Contoh:**
+
+```
+PUT /api/books/3
+```
+
+📸 Screenshot Test Endpoint PUT /api/books/:id
+<img width="791" height="256" alt="PUT" src="https://github.com/user-attachments/assets/456c273d-1178-42c1-bcd7-8dbdd3e947e3" />
+
+---
+
+### DELETE /api/books/:id
+
+**Deskripsi:**
+Menghapus buku berdasarkan ID.
+
+**Contoh:**
+
+```
+DELETE /api/books/1
+```
+
+📸 Screenshot Test Endpoint DELETE /api/books/:id
+<img width="791" height="238" alt="image" src="https://github.com/user-attachments/assets/cd473817-1563-423f-96b9-c571f4db10b8" />
+
+---
+
+## 👤 User Mode (Peminjaman Buku)
+
+Endpoint khusus User.
+Wajib menambahkan header:
+
+```
+x-user-role: user
+x-user-id: 1
+```
+
+---
+
+### POST /api/borrow
+
+**Deskripsi:**
+Melakukan peminjaman buku oleh user dan mencatat lokasi peminjaman.
+
+**Body Payload (JSON):**
+
+```json
+{
+  "bookId": 2,
+  "latitude": -6.2088,
+  "longitude": 106.8456
+}
+```
+
+**Logic Proses:**
+
+1. Mengecek ketersediaan stok buku
+2. Mengurangi stok buku sebanyak 1
+3. Menyimpan data peminjaman ke tabel BorrowLogs
+4. Menyimpan data lokasi peminjaman (latitude dan longitude)
+
+📸 Screenshot Test Endpoint POST /api/borrow
+<img width="790" height="286" alt="Cuplikan layar 2026-01-30 010411" src="https://github.com/user-attachments/assets/58803adf-bcbb-445f-a9f7-47abe73702d0" />
+
+---
+
+## 🗄️ Struktur Database
+
+### Tabel Books
+
+| Field     | Tipe              |
+| --------- | ----------------- |
+| id        | INT (Primary Key) |
+| title     | VARCHAR           |
+| author    | VARCHAR           |
+| stock     | INT               |
+| createdAt | DATETIME          |
+| updatedAt | DATETIME          |
+
+<img width="578" height="219" alt="databaseBooks" src="https://github.com/user-attachments/assets/3879ac10-72ff-4d6c-8d02-8608a467ea0d" />
+
+---
+
+### Tabel BorrowLogs
+
+| Field      | Tipe              |
+| ---------- | ----------------- |
+| id         | INT (Primary Key) |
+| userId     | INT               |
+| bookId     | INT               |
+| borrowDate | DATETIME          |
+| latitude   | FLOAT             |
+| longitude  | FLOAT             |
 
 
- POST Tambah Buku
-<img width="209" height="26" alt="image" src="https://github.com/user-attachments/assets/1e1b4cbf-9f1e-4a5a-83cd-a995c39a8ac7" />
-Body
+<img width="563" height="240" alt="tabelBorrowLogs" src="https://github.com/user-attachments/assets/54c7a66c-bb54-4cdf-88aa-330eb46347e3" />
+
+---
+
+## 📂 Struktur Folder Project
+
+```
+<img width="223" height="331" alt="image" src="https://github.com/user-attachments/assets/1689a0f9-3b18-4d93-a7c0-598b3a1ecd5c" />
+
+```
+
+---
+
+## 👤 Identitas Mahasiswa
+
+* Nama: **Dzakiyah Al Zahrani**
+* NIM: **20230140088**
+* Kelas: **B**
+* Mata Kuliah: **Pengembangan Aplikasi Web**
