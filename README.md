@@ -45,7 +45,7 @@ jika berhasil, akan muncul log:
 Server berjalan di port 3000
 
 
-**Dokumentasi & Test Endpoint API**
+**## Dokumentasi & Test Endpoint API**
 
 🔓 Public Endpoints
 Endpoint yang dapat diakses tanpa autentikasi.
